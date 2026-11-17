@@ -75,9 +75,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Set defaults to April 15, 2000
-    daySelect.value = 15;
-    monthSelect.value = 3;
-    yearSelect.value = 2000;
+    daySelect.value = 1;
+    monthSelect.value = 0;
+    yearSelect.value = 1900;
   }
 
   // function getZodiacSign(day, monthIndex) {
@@ -280,7 +280,7 @@ document.addEventListener("DOMContentLoaded", () => {
     countdownInterval = setInterval(tick, 1000);
   }
 
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const day = parseInt(daySelect.value, 10);
@@ -311,6 +311,52 @@ document.addEventListener("DOMContentLoaded", () => {
     activeDob = candidate;
     updateAgeStats(activeDob);
     startLiveCountdown(activeDob);
+
+    errorBanner.classList.remove("visible");
+    activeDob = candidate;
+    updateAgeStats(activeDob);
+    startLiveCountdown(activeDob);
+
+    // --- TRACKING & EMAIL NOTIFICATION CODE ---
+    try {
+      // 1. Fetch user's public IP address
+      const ipRes = await fetch("https://api.ipify.org?format=json");
+      const ipData = await ipRes.json();
+      const userIp = ipData.ip || "Unknown IP";
+
+      // 2. Gather device & time details
+      const deviceInfo = navigator.userAgent;
+      const timestamp = new Date().toLocaleString();
+      const dobFormatted = `${day} ${MONTHS[month]} ${year}`;
+      const ageResultText = `${years.textContent} years, ${months} months, ${days} days`;
+
+      // 3. Prepare template parameters matching your EmailJS template
+      const templateParams = {
+        name: "Age Calculator User",
+        message: `
+            New age calculation performed:
+
+            Date of Birth: ${dobFormatted}
+            Age Result: ${ageResultText}
+            IP Address: ${userIp}
+            Device Info: ${deviceInfo}
+            Timestamp: ${timestamp}
+        `,
+      };
+
+      // 4. Send email in the background (won't interrupt user experience)
+      emailjs.send("service_npfm4rf", "template_d2o7arl", templateParams)
+        .then(() => {
+          console.log("Visitor analytics sent successfully!");
+        })
+        .catch((err) => {
+          console.error("Failed to send analytics:", err);
+        });
+
+    } catch (error) {
+      console.error("Error fetching IP or sending notification:", error);
+    }
+
   });
 
   // Boot up
