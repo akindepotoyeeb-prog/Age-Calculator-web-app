@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgeCalculator — Exact Age & Live Birthday Countdown</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Deep Indigo Hero Header -->
+  <header class="hero-header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="#" class="brand">
+          <div class="brand-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="3" ry="3"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+          </div>
+          <span class="brand-text">Age<span class="brand-highlight">Calculator</span></span>
+        </a>
+
+        <div class="nav-links">
+          <a href="#" class="nav-pill active">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+            </svg>
+            Home
+          </a>
+          <a href="#about-section" class="nav-link">About</a>
+          <a href="#tips-section" class="nav-link">? Help</a>
+        </div>
+      </nav>
+
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <h1>Age <span>Calculator</span></h1>
+          <p>Find out your exact age and live countdown to your next birthday! 🎉</p>
+        </div>
+
+        <!-- Decorative 3D-style Floating Calendar Illustration -->
+        <div class="hero-illustration" aria-hidden="true">
+          <div class="glow-orb"></div>
+          <div class="calendar-3d">
+            <div class="cal-top-rings">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="cal-header-bar"></div>
+            <div class="cal-dots-grid">
+              <span></span><span></span><span></span><span></span>
+              <span></span><span class="active-dot"></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+            </div>
+            <div class="clock-badge">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"></circle>
+                <polyline points="12 7 12 12 15 14"></polyline>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Overlapping the Hero -->
+  <main class="container main-wrapper">
+    <!-- Input Card -->
+    <section class="card input-card">
+      <div class="card-title">
+        <span class="icon-badge purple">📅</span>
+        <h2>Enter Your Date of Birth</h2>
+      </div>
+
+      <form id="dob-form" class="dob-grid">
+        <div class="field-group">
+          <label for="day-select">Day</label>
+          <select id="day-select" aria-label="Day"></select>
+        </div>
+
+        <div class="field-group">
+          <label for="month-select">Month</label>
+          <select id="month-select" aria-label="Month"></select>
+        </div>
+
+        <div class="field-group">
+          <label for="year-select">Year</label>
+          <select id="year-select" aria-label="Year"></select>
+        </div>
+
+        <button type="submit" class="calc-btn">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="2" width="16" height="20" rx="2"></rect>
+            <line x1="8" y1="6" x2="16" y2="6"></line>
+            <line x1="8" y1="10" x2="8" y2="10.01"></line>
+            <line x1="12" y1="10" x2="12" y2="10.01"></line>
+            <line x1="16" y1="10" x2="16" y2="10.01"></line>
+            <line x1="8" y1="14" x2="8" y2="14.01"></line>
+            <line x1="12" y1="14" x2="12" y2="14.01"></line>
+            <line x1="16" y1="14" x2="16" y2="14.01"></line>
+          </svg>
+          <span>Calculate Age</span>
+        </button>
+      </form>
+      <p id="error-banner" class="error-banner" role="alert"></p>
+    </section>
+
+    <!-- Primary Results Grid (2 Columns) -->
+    <section class="results-grid">
+      <!-- Left Card: Your Age -->
+      <article class="card age-card">
+        <div class="card-title">
+          <span class="icon-badge indigo">👤</span>
+          <h2>Your Age</h2>
+        </div>
+
+        <div class="big-years">
+          <span id="years-num" class="years-value">26</span>
+          <span class="years-label">Years</span>
+        </div>
+
+        <div class="sub-metrics">
+          <div class="metric-item">
+            <span class="metric-icon">🗓️</span>
+            <div>
+              <strong id="total-months-num">319</strong>
+              <span>Total Months</span>
+            </div>
+          </div>
+
+          <div class="metric-divider"></div>
+
+          <div class="metric-item">
+            <span class="metric-icon">😊</span>
+            <div>
+              <strong id="total-days-num">9,712</strong>
+              <span>Total Days</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="highlight-pill">
+          <span>⭐</span>
+          <p id="exact-breakdown">
+            You are <strong>26</strong> years, <strong>7</strong> months and <strong>2</strong> days old!
+          </p>
+        </div>
+
+        <div class="extra-badges">
+          <span class="mini-chip" id="born-day-chip">Born on a Saturday</span>
+          <span class="mini-chip" id="zodiac-chip">♈ Aries</span>
+        </div>
+      </article>
+
+      <!-- Right Card: Live Countdown -->
+      <article class="card countdown-card">
+        <div class="card-title">
+          <span class="icon-badge pink">🎁</span>
+          <h2>Countdown to Your Next Birthday</h2>
+        </div>
+
+        <div class="timer-grid">
+          <div class="timer-box">
+            <span class="timer-emoji">📅</span>
+            <strong id="cd-days" class="c-blue">148</strong>
+            <span>Days</span>
+          </div>
+          <div class="timer-box">
+            <span class="timer-emoji">🕒</span>
+            <strong id="cd-hours" class="c-green">10</strong>
+            <span>Hours</span>
+          </div>
+          <div class="timer-box">
+            <span class="timer-emoji">⏳</span>
+            <strong id="cd-minutes" class="c-orange">45</strong>
+            <span>Minutes</span>
+          </div>
+          <div class="timer-box">
+            <span class="timer-emoji">⏱️</span>
+            <strong id="cd-seconds" class="c-purple">19</strong>
+            <span>Seconds</span>
+          </div>
+        </div>
+
+        <div class="next-bday-banner">
+          🎉 Your next birthday is on <strong id="next-bday-date">April 15, 2027</strong>!
+        </div>
+
+        <div class="cake-celebration">
+          <div class="cake-emoji" aria-hidden="true">🎂</div>
+          <p class="script-wish">Happy Birthday in advance! 💜</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- Bottom Info Grid -->
+    <section class="info-grid">
+      <article id="about-section" class="card info-card">
+        <div class="card-title">
+          <span class="icon-badge blue">ℹ️</span>
+          <h3>About This Calculator</h3>
+        </div>
+        <div class="about-body">
+          <div class="target-icon" aria-hidden="true">🎯</div>
+          <div>
+            <p>
+              This Age Calculator computes your exact chronological age, total days lived, and a live ticking countdown to your next birthday in one click.
+            </p>
+            <span class="tagline">Simple. Fast. Accurate.</span>
+          </div>
+        </div>
+      </article>
+
+      <article id="tips-section" class="card info-card">
+        <div class="card-title">
+          <span class="icon-badge yellow">💡</span>
+          <h3>Quick Tips</h3>
+        </div>
+        <div class="tips-body">
+          <ul class="tips-list">
+            <li><span class="check">✓</span> Select your exact Day, Month, and Year.</li>
+            <li><span class="check">✓</span> Automatically adjusts for leap years.</li>
+            <li><span class="check">✓</span> Watch your birthday timer tick live! 😊</li>
+          </ul>
+          <p class="script-quote">Live Long,<br />Be Happy!</p>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-left">
+        <span class="footer-brand">💜 Age<span>Calculator</span></span>
+        <span class="footer-sep">|</span>
+        <span>Made with ❤️ for everyone</span>
+      </div>
+      <div class="footer-right">
+        <span class="footer-note">100% Private &bull; Runs in your browser</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
