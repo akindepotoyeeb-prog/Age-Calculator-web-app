@@ -29,6 +29,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const cdSeconds = document.getElementById("cd-seconds");
   const nextBdayDateEl = document.getElementById("next-bday-date");
 
+  // Progress & Milestone elements
+  const turningAgeLabel = document.getElementById("turning-age-label");
+  const yearProgressPct = document.getElementById("year-progress-pct");
+  const yearProgressBar = document.getElementById("year-progress-bar");
+  const totalWeeksNum = document.getElementById("total-weeks-num");
+  const totalHoursNum = document.getElementById("total-hours-num");
+  const tenKText = document.getElementById("ten-k-text");
+
   const MONTHS = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
@@ -199,6 +207,34 @@ document.addEventListener("DOMContentLoaded", () => {
     yearsNum.textContent = years;
     totalMonthsNum.textContent = totalMonths.toLocaleString();
     totalDaysNum.textContent = totalDays.toLocaleString();
+
+    // Total Weeks & Hours Lived
+    const totalWeeks = Math.floor(totalDays / 7);
+    const totalHours = totalDays * 24;
+    totalWeeksNum.textContent = totalWeeks.toLocaleString();
+    totalHoursNum.textContent = totalHours.toLocaleString();
+
+    // 10,000th Day Milestone
+    const tenThousandDate = new Date(dob.getFullYear(), dob.getMonth(), dob.getDate() + 10000);
+    const formatted10k = `${MONTHS[tenThousandDate.getMonth()]} ${tenThousandDate.getDate()}, ${tenThousandDate.getFullYear()}`;
+    if (totalDays >= 10000) {
+      tenKText.innerHTML = `You celebrated your <strong>10,000th day</strong> alive on <strong>${formatted10k}</strong>!`;
+    } else {
+      const daysLeftFor10k = (10000 - totalDays).toLocaleString();
+      tenKText.innerHTML = `Your <strong>10,000th day</strong> alive is on <strong>${formatted10k}</strong> (${daysLeftFor10k} days to go)!`;
+    }
+
+    // Year Progress toward next birthday
+    const nextBday = getNextBirthday(dob, now);
+    const lastBday = new Date(nextBday.getFullYear() - 1, dob.getMonth(), dob.getDate());
+    const totalYearMs = nextBday - lastBday;
+    const elapsedYearMs = now - lastBday;
+    const pct = Math.min(100, Math.max(0, Math.round((elapsedYearMs / totalYearMs) * 100)));
+
+    turningAgeLabel.textContent = `Journey to Age ${years + 1}`;
+    yearProgressPct.textContent = `${pct}%`;
+    yearProgressBar.style.width = `${pct}%`;
+
     exactBreakdown.innerHTML = `You are <strong>${years}</strong> years, <strong>${months}</strong> months and <strong>${days}</strong> days old!`;
 
     // bornDayChip.textContent = `Born on a ${WEEKDAYS[dob.getDay()]}`;
