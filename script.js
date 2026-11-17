@@ -10,8 +10,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const totalMonthsNum = document.getElementById("total-months-num");
   const totalDaysNum = document.getElementById("total-days-num");
   const exactBreakdown = document.getElementById("exact-breakdown");
-  const bornDayChip = document.getElementById("born-day-chip");
-  const zodiacChip = document.getElementById("zodiac-chip");
+  // const bornDayChip = document.getElementById("born-day-chip");
+  // const zodiacChip = document.getElementById("zodiac-chip");
+  const bornDayTitle = document.getElementById("born-day-title");
+
+  const westernIcon = document.getElementById("western-icon");
+  const westernTitle = document.getElementById("western-title");
+  const westernMeaning = document.getElementById("western-meaning");
+
+  const chineseIcon = document.getElementById("chinese-icon");
+  const chineseTitle = document.getElementById("chinese-title");
+  const chineseMeaning = document.getElementById("chinese-meaning");
 
   // Countdown output elements
   const cdDays = document.getElementById("cd-days");
@@ -63,20 +72,79 @@ document.addEventListener("DOMContentLoaded", () => {
     yearSelect.value = 2000;
   }
 
-  function getZodiacSign(day, monthIndex) {
+  // function getZodiacSign(day, monthIndex) {
+  //   const m = monthIndex + 1;
+  //   if ((m === 3 && day >= 21) || (m === 4 && day <= 19)) return "♈ Aries";
+  //   if ((m === 4 && day >= 20) || (m === 5 && day <= 20)) return "♉ Taurus";
+  //   if ((m === 5 && day >= 21) || (m === 6 && day <= 20)) return "♊ Gemini";
+  //   if ((m === 6 && day >= 21) || (m === 7 && day <= 22)) return "♋ Cancer";
+  //   if ((m === 7 && day >= 23) || (m === 8 && day <= 22)) return "♌ Leo";
+  //   if ((m === 8 && day >= 23) || (m === 9 && day <= 22)) return "♍ Virgo";
+  //   if ((m === 9 && day >= 23) || (m === 10 && day <= 22)) return "♎ Libra";
+  //   if ((m === 10 && day >= 23) || (m === 11 && day <= 21)) return "♏ Scorpio";
+  //   if ((m === 11 && day >= 22) || (m === 12 && day <= 21)) return "♐ Sagittarius";
+  //   if ((m === 12 && day >= 22) || (m === 1 && day <= 19)) return "♑ Capricorn";
+  //   if ((m === 1 && day >= 20) || (m === 2 && day <= 18)) return "♒ Aquarius";
+  //   return "♓ Pisces";
+  // }
+
+  function getWesternZodiac(day, monthIndex) {
     const m = monthIndex + 1;
-    if ((m === 3 && day >= 21) || (m === 4 && day <= 19)) return "♈ Aries";
-    if ((m === 4 && day >= 20) || (m === 5 && day <= 20)) return "♉ Taurus";
-    if ((m === 5 && day >= 21) || (m === 6 && day <= 20)) return "♊ Gemini";
-    if ((m === 6 && day >= 21) || (m === 7 && day <= 22)) return "♋ Cancer";
-    if ((m === 7 && day >= 23) || (m === 8 && day <= 22)) return "♌ Leo";
-    if ((m === 8 && day >= 23) || (m === 9 && day <= 22)) return "♍ Virgo";
-    if ((m === 9 && day >= 23) || (m === 10 && day <= 22)) return "♎ Libra";
-    if ((m === 10 && day >= 23) || (m === 11 && day <= 21)) return "♏ Scorpio";
-    if ((m === 11 && day >= 22) || (m === 12 && day <= 21)) return "♐ Sagittarius";
-    if ((m === 12 && day >= 22) || (m === 1 && day <= 19)) return "♑ Capricorn";
-    if ((m === 1 && day >= 20) || (m === 2 && day <= 18)) return "♒ Aquarius";
-    return "♓ Pisces";
+    if ((m === 3 && day >= 21) || (m === 4 && day <= 19)) {
+      return { icon: "♈", name: "Aries", meaning: "Fire sign • Bold, ambitious, energetic, and a natural leader." };
+    }
+    if ((m === 4 && day >= 20) || (m === 5 && day <= 20)) {
+      return { icon: "♉", name: "Taurus", meaning: "Earth sign • Reliable, patient, practical, and grounded." };
+    }
+    if ((m === 5 && day >= 21) || (m === 6 && day <= 20)) {
+      return { icon: "♊", name: "Gemini", meaning: "Air sign • Curious, adaptable, expressive, and quick-witted." };
+    }
+    if ((m === 6 && day >= 21) || (m === 7 && day <= 22)) {
+      return { icon: "♋", name: "Cancer", meaning: "Water sign • Intuitive, caring, protective, and deeply loyal." };
+    }
+    if ((m === 7 && day >= 23) || (m === 8 && day <= 22)) {
+      return { icon: "♌", name: "Leo", meaning: "Fire sign • Charismatic, creative, generous, and confident." };
+    }
+    if ((m === 8 && day >= 23) || (m === 9 && day <= 22)) {
+      return { icon: "♍", name: "Virgo", meaning: "Earth sign • Analytical, detail-oriented, helpful, and thoughtful." };
+    }
+    if ((m === 9 && day >= 23) || (m === 10 && day <= 22)) {
+      return { icon: "♎", name: "Libra", meaning: "Air sign • Diplomatic, fair-minded, social, and harmony-seeking." };
+    }
+    if ((m === 10 && day >= 23) || (m === 11 && day <= 21)) {
+      return { icon: "♏", name: "Scorpio", meaning: "Water sign • Passionate, resourceful, determined, and perceptive." };
+    }
+    if ((m === 11 && day >= 22) || (m === 12 && day <= 21)) {
+      return { icon: "♐", name: "Sagittarius", meaning: "Fire sign • Optimistic, adventurous, independent, and philosophical." };
+    }
+    if ((m === 12 && day >= 22) || (m === 1 && day <= 19)) {
+      return { icon: "♑", name: "Capricorn", meaning: "Earth sign • Disciplined, responsible, strategic, and persistent." };
+    }
+    if ((m === 1 && day >= 20) || (m === 2 && day <= 18)) {
+      return { icon: "♒", name: "Aquarius", meaning: "Air sign • Innovative, progressive, original, and humanitarian." };
+    }
+    return { icon: "♓", name: "Pisces", meaning: "Water sign • Compassionate, artistic, empathetic, and imaginative." };
+  }
+
+  function getChineseZodiac(year) {
+    // 1900 is the Year of the Rat (index 0)
+    const animals = [
+      { icon: "🐀", name: "Rat", meaning: "Quick-witted, resourceful, versatile, and sharp-minded." },
+      { icon: "🐂", name: "Ox", meaning: "Diligent, dependable, strong-willed, and determined." },
+      { icon: "🐅", name: "Tiger", meaning: "Brave, competitive, confident, and fiercely independent." },
+      { icon: "🐇", name: "Rabbit", meaning: "Gentle, quiet, elegant, alert, and compassionate." },
+      { icon: "🐉", name: "Dragon", meaning: "Confident, charismatic, intelligent, and naturally enthusiastic." },
+      { icon: "🐍", name: "Snake", meaning: "Enigmatic, wise, intuitive, and strategic thinker." },
+      { icon: "🐎", name: "Horse", meaning: "Animated, active, energetic, and freedom-loving." },
+      { icon: "🐐", name: "Goat", meaning: "Calm, gentle, creative, and deeply sympathetic." },
+      { icon: "🐒", name: "Monkey", meaning: "Sharp, smart, curious, playful, and inventive." },
+      { icon: "🐓", name: "Rooster", meaning: "Observant, hardworking, courageous, and punctual." },
+      { icon: "🐕", name: "Dog", meaning: "Loyal, honest, prudent, and always ready to help." },
+      { icon: "🐖", name: "Pig", meaning: "Compassionate, generous, diligent, and warm-hearted." }
+    ];
+
+    const index = (((year - 1900) % 12) + 12) % 12;
+    return animals[index];
   }
 
   function getNextBirthday(dob, now) {
@@ -133,8 +201,20 @@ document.addEventListener("DOMContentLoaded", () => {
     totalDaysNum.textContent = totalDays.toLocaleString();
     exactBreakdown.innerHTML = `You are <strong>${years}</strong> years, <strong>${months}</strong> months and <strong>${days}</strong> days old!`;
 
-    bornDayChip.textContent = `Born on a ${WEEKDAYS[dob.getDay()]}`;
-    zodiacChip.textContent = getZodiacSign(dob.getDate(), dob.getMonth());
+    // bornDayChip.textContent = `Born on a ${WEEKDAYS[dob.getDay()]}`;
+    // zodiacChip.textContent = getZodiacSign(dob.getDate(), dob.getMonth());
+
+    bornDayTitle.textContent = WEEKDAYS[dob.getDay()];
+
+    const western = getWesternZodiac(dob.getDate(), dob.getMonth());
+    westernIcon.textContent = western.icon;
+    westernTitle.textContent = western.name;
+    westernMeaning.textContent = western.meaning;
+
+    const chinese = getChineseZodiac(dob.getFullYear());
+    chineseIcon.textContent = chinese.icon;
+    chineseTitle.textContent = `Year of the ${chinese.name}`;
+    chineseMeaning.textContent = chinese.meaning;
   }
 
   function startLiveCountdown(dob) {

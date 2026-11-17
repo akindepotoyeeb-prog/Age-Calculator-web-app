@@ -443,7 +443,7 @@ body {
   margin-bottom: 12px;
 }
 
-.extra-badges {
+/* .extra-badges {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
@@ -457,6 +457,63 @@ body {
   font-weight: 700;
   padding: 5px 12px;
   border-radius: 999px;
+} */
+
+.insights-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.insight-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--purple-tint);
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+  padding: 11px 14px;
+}
+
+.insight-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.insight-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.insight-label {
+  font-size: 10.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--purple-main);
+}
+
+.insight-content strong {
+  font-size: 14.5px;
+  font-weight: 800;
+  color: var(--text-dark);
+}
+
+.insight-desc {
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--text-muted);
+  font-weight: 500;
 }
 
 /* Right Card: Countdown */
