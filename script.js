@@ -10,8 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const totalMonthsNum = document.getElementById("total-months-num");
   const totalDaysNum = document.getElementById("total-days-num");
   const exactBreakdown = document.getElementById("exact-breakdown");
-  // const bornDayChip = document.getElementById("born-day-chip");
-  // const zodiacChip = document.getElementById("zodiac-chip");
   const bornDayTitle = document.getElementById("born-day-title");
 
   const westernIcon = document.getElementById("western-icon");
@@ -49,6 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let activeDob = new Date(2000, 3, 15); // Default: April 15, 2000
   let countdownInterval = null;
+  let lastCalculatedAgeText = "26 years, 7 months, 2 days"; // Shared variable for EmailJS
 
   // Populate Day, Month, Year dropdowns
   function populateSelectors() {
@@ -75,26 +74,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Set defaults to April 15, 2000
-    daySelect.value = 1;
-    monthSelect.value = 0;
-    yearSelect.value = 1900;
+    daySelect.value = 15;
+    monthSelect.value = 3; // April (0-indexed)
+    yearSelect.value = 2000;
   }
-
-  // function getZodiacSign(day, monthIndex) {
-  //   const m = monthIndex + 1;
-  //   if ((m === 3 && day >= 21) || (m === 4 && day <= 19)) return "♈ Aries";
-  //   if ((m === 4 && day >= 20) || (m === 5 && day <= 20)) return "♉ Taurus";
-  //   if ((m === 5 && day >= 21) || (m === 6 && day <= 20)) return "♊ Gemini";
-  //   if ((m === 6 && day >= 21) || (m === 7 && day <= 22)) return "♋ Cancer";
-  //   if ((m === 7 && day >= 23) || (m === 8 && day <= 22)) return "♌ Leo";
-  //   if ((m === 8 && day >= 23) || (m === 9 && day <= 22)) return "♍ Virgo";
-  //   if ((m === 9 && day >= 23) || (m === 10 && day <= 22)) return "♎ Libra";
-  //   if ((m === 10 && day >= 23) || (m === 11 && day <= 21)) return "♏ Scorpio";
-  //   if ((m === 11 && day >= 22) || (m === 12 && day <= 21)) return "♐ Sagittarius";
-  //   if ((m === 12 && day >= 22) || (m === 1 && day <= 19)) return "♑ Capricorn";
-  //   if ((m === 1 && day >= 20) || (m === 2 && day <= 18)) return "♒ Aquarius";
-  //   return "♓ Pisces";
-  // }
 
   function getWesternZodiac(day, monthIndex) {
     const m = monthIndex + 1;
@@ -135,7 +118,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function getChineseZodiac(year) {
-    // 1900 is the Year of the Rat (index 0)
     const animals = [
       { icon: "🐀", name: "Rat", meaning: "Quick-witted, resourceful, versatile, and sharp-minded." },
       { icon: "🐂", name: "Ox", meaning: "Diligent, dependable, strong-willed, and determined." },
@@ -160,7 +142,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const birthDay = dob.getDate();
 
     let nextYear = now.getFullYear();
-    // Handle Feb 29 birthdays cleanly on non-leap years
     let candidate = new Date(nextYear, birthMonth, birthDay, 0, 0, 0);
     if (birthMonth === 1 && birthDay === 29 && candidate.getMonth() !== 1) {
       candidate = new Date(nextYear, 2, 1, 0, 0, 0);
@@ -176,15 +157,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     return candidate;
   }
-
+  
   function updateAgeStats(dob) {
     const now = new Date();
     const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
+    
     let years = todayMidnight.getFullYear() - dob.getFullYear();
     let months = todayMidnight.getMonth() - dob.getMonth();
     let days = todayMidnight.getDate() - dob.getDate();
-
+    
     if (days < 0) {
       months -= 1;
       const daysInPrevMonth = new Date(
@@ -207,6 +188,9 @@ document.addEventListener("DOMContentLoaded", () => {
     yearsNum.textContent = years;
     totalMonthsNum.textContent = totalMonths.toLocaleString();
     totalDaysNum.textContent = totalDays.toLocaleString();
+
+    // Store formatted age string for email tracking
+    lastCalculatedAgeText = `${years} years, ${months} months, ${days} days`;
 
     // Total Weeks & Hours Lived
     const totalWeeks = Math.floor(totalDays / 7);
@@ -236,9 +220,6 @@ document.addEventListener("DOMContentLoaded", () => {
     yearProgressBar.style.width = `${pct}%`;
 
     exactBreakdown.innerHTML = `You are <strong>${years}</strong> years, <strong>${months}</strong> months and <strong>${days}</strong> days old!`;
-
-    // bornDayChip.textContent = `Born on a ${WEEKDAYS[dob.getDay()]}`;
-    // zodiacChip.textContent = getZodiacSign(dob.getDate(), dob.getMonth());
 
     bornDayTitle.textContent = WEEKDAYS[dob.getDay()];
 
@@ -290,7 +271,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const candidate = new Date(year, month, day);
     const now = new Date();
 
-    // Validate calendar existence (e.g. rejects April 31 or Feb 30)
+    // Validate calendar existence
     if (
       candidate.getFullYear() !== year ||
       candidate.getMonth() !== month ||
@@ -312,11 +293,6 @@ document.addEventListener("DOMContentLoaded", () => {
     updateAgeStats(activeDob);
     startLiveCountdown(activeDob);
 
-    errorBanner.classList.remove("visible");
-    activeDob = candidate;
-    updateAgeStats(activeDob);
-    startLiveCountdown(activeDob);
-
     // --- TRACKING & EMAIL NOTIFICATION CODE ---
     try {
       // 1. Fetch user's public IP address
@@ -328,7 +304,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const deviceInfo = navigator.userAgent;
       const timestamp = new Date().toLocaleString();
       const dobFormatted = `${day} ${MONTHS[month]} ${year}`;
-      const ageResultText = `${years.textContent} years, ${months} months, ${days} days`;
 
       // 3. Prepare template parameters matching your EmailJS template
       const templateParams = {
@@ -337,15 +312,15 @@ document.addEventListener("DOMContentLoaded", () => {
             New age calculation performed:
 
             Date of Birth: ${dobFormatted}
-            Age Result: ${ageResultText}
+            Age Result: ${lastCalculatedAgeText}
             IP Address: ${userIp}
             Device Info: ${deviceInfo}
             Timestamp: ${timestamp}
         `,
       };
 
-      // 4. Send email in the background (won't interrupt user experience)
-      emailjs.send("service_npfm4rf", "template_d2o7arl", templateParams)
+      // 4. Send email in the background
+      emailjs.send("service_npfm4rf", "template_d2o7arl", templateParams, "KQlSm4uwZ8mGBd_i4")
         .then(() => {
           console.log("Visitor analytics sent successfully!");
         })
@@ -356,7 +331,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
       console.error("Error fetching IP or sending notification:", error);
     }
-
   });
 
   // Boot up
